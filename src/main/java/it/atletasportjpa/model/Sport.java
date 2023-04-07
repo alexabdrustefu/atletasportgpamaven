@@ -5,6 +5,8 @@ import java.time.format.DateTimeFormatter;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -84,8 +86,8 @@ public class Sport {
 	public void setDataFine(LocalDate dataFine) {
 		this.dataFine = dataFine;
 	}
-	// toString
 
+	// toString
 	@Override
 	public String toString() {
 		String dataInizioString = dataInizio != null ? DateTimeFormatter.ofPattern("dd/MM/yyyy").format(dataInizio)

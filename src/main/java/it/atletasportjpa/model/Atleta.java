@@ -41,6 +41,8 @@ public class Atleta {
 	@ManyToMany
 	@JoinTable(name = "atleta_sport", joinColumns = @JoinColumn(name = "atleta_id", referencedColumnName = "ID"), inverseJoinColumns = @JoinColumn(name = "sport_id", referencedColumnName = "ID"))
 	private Set<Sport> sports = new HashSet<>(0);
+	@Enumerated(EnumType.STRING)
+	private SportPraticanteAtleta sport = SportPraticanteAtleta.NIENTE;
 
 	// costruttore dafualt
 	public Atleta() {
@@ -144,6 +146,14 @@ public class Atleta {
 
 	public void setStato(StatoAtleta stato) {
 		this.stato = stato;
+	}
+
+	public SportPraticanteAtleta getSport() {
+		return sport;
+	}
+
+	public void setSport(SportPraticanteAtleta sport) {
+		this.sport = sport;
 	}
 
 	// toString

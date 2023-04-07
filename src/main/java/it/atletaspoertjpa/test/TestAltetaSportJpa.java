@@ -5,6 +5,7 @@ import java.util.List;
 
 import it.atletasportjpa.model.Atleta;
 import it.atletasportjpa.model.Sport;
+import it.atletasportjpa.model.SportPraticanteAtleta;
 import it.atletasportjpa.model.StatoAtleta;
 import it.atletasportjpa.service.AtletaService;
 import it.atletasportjpa.service.MyServiceFactory;
@@ -25,14 +26,14 @@ public class TestAltetaSportJpa {
 			// ###########################################################################################
 
 			// TEST InserisciNuovoAtleta
-			inserimentoAtleta(atletaServiceInstance);
-			System.out.println("Gli elementi nella tabella atleta sono: " + atletaServiceInstance.listAll().size());
+//			inserimentoAtleta(atletaServiceInstance);
+//			System.out.println("Gli elementi nella tabella atleta sono: " + atletaServiceInstance.listAll().size());
 			// ###########################################################################################
-
-			// TEST collegaSportEAtletaEsistenti
-			collegamentoAtletaASport(atletaServiceInstance, sportServiceInstance);
-			System.out.println("Gli elementi nella tabella atleta sono: " + atletaServiceInstance.listAll().size());
-			System.out.println("Gli elementi nella tabella sport sono: " + sportServiceInstance.listAll().size());
+//
+//			// TEST collegaSportEAtletaEsistenti
+//			collegamentoAtletaASport(atletaServiceInstance, sportServiceInstance);
+//			System.out.println("Gli elementi nella tabella atleta sono: " + atletaServiceInstance.listAll().size());
+//			System.out.println("Gli elementi nella tabella sport sono: " + sportServiceInstance.listAll().size());
 			// ###########################################################################################
 
 //			// TEST deleteAtleta
@@ -63,7 +64,9 @@ public class TestAltetaSportJpa {
 //			// TEST sommaMedaglieInSportChiusi
 //			sommaMedaglie(atletaServiceInstance);
 //			System.out.println("Gli elementi nella tabella atleta sono: " + atletaServiceInstance.listAll().size());
-			testModificaStatoUtente(atletaServiceInstance);
+//			testModificaStatoUtente(atletaServiceInstance);
+//			System.out.println("Gli elementi nella tabella atleta sono: " + atletaServiceInstance.listAll().size());
+			testModificaSport(atletaServiceInstance);
 			System.out.println("Gli elementi nella tabella atleta sono: " + atletaServiceInstance.listAll().size());
 
 		} catch (Throwable e) {
@@ -79,8 +82,8 @@ public class TestAltetaSportJpa {
 	private static void inizializzaSport(SportService sportServiceInstance) throws Exception {
 		if (sportServiceInstance.cercaPerDescrizione("Calcio") == null)
 			sportServiceInstance.inserisciNuovo(new Sport("Calcio"));
-		if (sportServiceInstance.cercaPerDescrizione("Basket") == null)
-			sportServiceInstance.inserisciNuovo(new Sport("Basket"));
+		if (sportServiceInstance.cercaPerDescrizione("Corsa") == null)
+			sportServiceInstance.inserisciNuovo(new Sport("Corsa"));
 		if (sportServiceInstance.cercaPerDescrizione("Nuoto") == null)
 			sportServiceInstance.inserisciNuovo(new Sport("Nuoto"));
 		if (sportServiceInstance.cercaPerDescrizione("Pallavolo") == null)
@@ -93,8 +96,11 @@ public class TestAltetaSportJpa {
 		System.out.println("-----TEST testInserisciAtleta INIZIO-----");
 		Atleta nuovoAtleta = new Atleta("alessandro", "stefu", LocalDate.of(2002, 10, 06), "1", 15);
 		Atleta secondoAtleta = new Atleta("mario", "rossi", LocalDate.of(2001, 10, 06), "3", 6);
+		nuovoAtleta.setSport(SportPraticanteAtleta.CALCIO);
+		secondoAtleta.setSport(SportPraticanteAtleta.CORSA);
 		atletaServiceInstance.inserisciNuovo(nuovoAtleta);
 		atletaServiceInstance.inserisciNuovo(secondoAtleta);
+
 		if (nuovoAtleta.getId() == null) {
 			throw new RuntimeException("testInserisciNuovoAtleta FALLITO: atleta non inserito.");
 		}
@@ -254,6 +260,31 @@ public class TestAltetaSportJpa {
 		StatoAtleta vecchioStatosecondoAtleta = secondoAtleta.getStato();
 		nuovoAtleta.setStato(StatoAtleta.PRATICANTE);
 		secondoAtleta.setStato(StatoAtleta.DISABILITATO);
+		atletaServiceINstance.aggiorna(nuovoAtleta);
+		atletaServiceINstance.aggiorna(secondoAtleta);
+
+		if (nuovoAtleta.getStato().equals(vecchioStato) || secondoAtleta.getStato().equals(vecchioStatosecondoAtleta))
+			throw new RuntimeException("testModificaStatoUtente fallito: modifica non avvenuta correttamente ");
+
+		System.out.println(".......testModificaStatoUtente fine: PASSED.............");
+	}
+
+	private static void testModificaSport(AtletaService atletaServiceINstance) throws Exception {
+		System.out.println(".......testModificaStatoUtente inizio.............");
+
+		// mi creo un utente inserendolo direttamente su db
+		Atleta nuovoAtleta = new Atleta("francesco", "colatei", LocalDate.of(2002, 10, 06), "9", 15);
+		Atleta secondoAtleta = new Atleta("leonardo", "morelli", LocalDate.of(2002, 1, 06), "5", 17);
+		atletaServiceINstance.inserisciNuovo(nuovoAtleta);
+		atletaServiceINstance.inserisciNuovo(secondoAtleta);
+		if (nuovoAtleta.getId() == null || secondoAtleta.getId() == null)
+			throw new RuntimeException("testModificaStatoUtente fallito: utente non inserito ");
+
+		// proviamo a passarlo nello stato ATTIVO ma salviamoci il vecchio stato
+		SportPraticanteAtleta vecchioStato = nuovoAtleta.getSport();
+		SportPraticanteAtleta vecchioStatosecondoAtleta = secondoAtleta.getSport();
+		nuovoAtleta.setSport(SportPraticanteAtleta.PALLAVOLO);
+		secondoAtleta.setSport(SportPraticanteAtleta.NUOTO);
 		atletaServiceINstance.aggiorna(nuovoAtleta);
 		atletaServiceINstance.aggiorna(secondoAtleta);
 
