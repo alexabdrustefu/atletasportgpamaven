@@ -1,14 +1,15 @@
 package it.atletasportjpamaven.dao;
 
 import javax.persistence.EntityManager;
+import javax.persistence.EntityManagerFactory;
+import javax.persistence.Persistence;
 import javax.persistence.PersistenceException;
 
 public class EntityManagereUtil {
-
 	private static final EntityManagerFactory entityManagerFactory;
 	static {
 		try {
-			entityManagerFactory = Persistence.createEntityManagerFactory("manytomanyjpa_unit");
+			entityManagerFactory = Persistence.createEntityManagerFactory("atletasportjpa_unit");
 
 		} catch (Throwable ex) {
 			System.err.println("Initial SessionFactory creation failed." + ex);

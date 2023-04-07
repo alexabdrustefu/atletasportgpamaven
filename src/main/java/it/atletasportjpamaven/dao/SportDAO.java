@@ -1,6 +1,12 @@
 package it.atletasportjpamaven.dao;
 
-public interface SportDAO extends IBaseDAO<Sport> {
-	public Sport findByDescrizione(String descrizione) throws Exception;
+import java.util.List;
 
+import it.atletasportjpa.model.Sport;
+
+public interface SportDAO extends IBaseDAO<Sport> {
+
+	public Sport findByDescrizione(String descrizione);
+
+	public List<Sport> findMistakes();
 }

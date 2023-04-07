@@ -1,5 +1,6 @@
-package it.atletasportspa.service;
+package it.atletasportjpa.service;
 
+import it.atletasportjpamaven.dao.MyDAOFactory;
 
 public class MyServiceFactory {
 
@@ -18,7 +19,7 @@ public class MyServiceFactory {
 
 	public static SportService getSportServiceInstance() {
 		if (SPORT_SERVICE_INSTANCE == null)
-			SPORT_SERVICE_INSTANCE = new SportServiceImpl();
+			SPORT_SERVICE_INSTANCE = new SportSrviceImpl();
 
 		SPORT_SERVICE_INSTANCE.setAtletaDAO(MyDAOFactory.getAtletaDAOInstance());
 		SPORT_SERVICE_INSTANCE.setSportDAO(MyDAOFactory.getSportDAOInstance());

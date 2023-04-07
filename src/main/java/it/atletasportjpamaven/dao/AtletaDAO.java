@@ -1,5 +1,9 @@
 package it.atletasportjpamaven.dao;
 
-public interface AtletaDAO  extends IBaseDAO<Atleta> {
+import it.atletasportjpa.model.Atleta;
 
+public interface AtletaDAO extends IBaseDAO<Atleta> {
+	public Atleta findByIdFetchingSports(Long id);
+
+	public Long sumNumeroMedaglieVinteInSportChiusi();
 }

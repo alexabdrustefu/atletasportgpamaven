@@ -1,7 +1,9 @@
-package it.atletasportspa.service;
+package it.atletasportjpa.service;
 
 import java.util.List;
 
+import it.atletasportjpa.model.Atleta;
+import it.atletasportjpa.model.Sport;
 import it.atletasportjpamaven.dao.AtletaDAO;
 import it.atletasportjpamaven.dao.SportDAO;
 
@@ -18,7 +20,9 @@ public interface AtletaService {
 
 	public void aggiungiSport(Atleta atletaEsistente, Sport sportInstance) throws Exception;
 
-// per injection
+	public Long sommaMedaglieVinteInSportChiusi() throws Exception;
+
+	// per injection
 	public void setAtletaDAO(AtletaDAO atletaDAO);
 
 	public void setSportDAO(SportDAO sportDAO);

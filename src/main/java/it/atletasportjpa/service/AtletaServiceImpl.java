@@ -1,14 +1,16 @@
-package it.atletasportspa.service;
+package it.atletasportjpa.service;
 
 import java.util.List;
 
 import javax.persistence.EntityManager;
 
+import it.atletasportjpa.model.Atleta;
+import it.atletasportjpa.model.Sport;
 import it.atletasportjpamaven.dao.AtletaDAO;
+import it.atletasportjpamaven.dao.EntityManagereUtil;
 import it.atletasportjpamaven.dao.SportDAO;
 
 public class AtletaServiceImpl implements AtletaService {
-
 	private AtletaDAO atletaDao;
 	private SportDAO sportDao;
 
@@ -24,7 +26,7 @@ public class AtletaServiceImpl implements AtletaService {
 
 	@Override
 	public List<Atleta> listAll() throws Exception {
-		EntityManager entityManager = EntityManagerUtil.getEntityManager();
+		EntityManager entityManager = EntityManagereUtil.getEntityManager();
 		try {
 			// injection
 			atletaDao.setEntityManager(entityManager);
@@ -35,30 +37,30 @@ public class AtletaServiceImpl implements AtletaService {
 			e.printStackTrace();
 			throw e;
 		} finally {
-			EntityManagerUtil.closeEntityManager(entityManager);
+			EntityManagereUtil.closeEntityManager(entityManager);
 		}
 	}
 
 	@Override
 	public Atleta caricaSingoloAtleta(Long id) throws Exception {
-		EntityManager entityManager = EntityManagerUtil.getEntityManager();
+		EntityManager entityManager = EntityManagereUtil.getEntityManager();
 		try {
 			// injection
 			atletaDao.setEntityManager(entityManager);
 
 			// esecuzione metodo
-			return atletaDao.get(id);
+			return atletaDao.findByIdFetchingSports(id);
 		} catch (Exception e) {
 			e.printStackTrace();
 			throw e;
 		} finally {
-			EntityManagerUtil.closeEntityManager(entityManager);
+			EntityManagereUtil.closeEntityManager(entityManager);
 		}
 	}
 
 	@Override
 	public void aggiorna(Atleta atletaInstance) throws Exception {
-		EntityManager entityManager = EntityManagerUtil.getEntityManager();
+		EntityManager entityManager = EntityManagereUtil.getEntityManager();
 		try {
 
 			// è un cambiamento del database,
@@ -79,14 +81,14 @@ public class AtletaServiceImpl implements AtletaService {
 			e.printStackTrace();
 			throw e;
 		} finally {
-			EntityManagerUtil.closeEntityManager(entityManager);
+			EntityManagereUtil.closeEntityManager(entityManager);
 		}
 
 	}
 
 	@Override
 	public void inserisciNuovo(Atleta atletaInstance) throws Exception {
-		EntityManager entityManager = EntityManagerUtil.getEntityManager();
+		EntityManager entityManager = EntityManagereUtil.getEntityManager();
 		try {
 
 			// è un cambiamento del database,
@@ -107,14 +109,14 @@ public class AtletaServiceImpl implements AtletaService {
 			e.printStackTrace();
 			throw e;
 		} finally {
-			EntityManagerUtil.closeEntityManager(entityManager);
+			EntityManagereUtil.closeEntityManager(entityManager);
 		}
 
 	}
 
 	@Override
 	public void rimuovi(Long idAtleta) throws Exception {
-		EntityManager entityManager = EntityManagerUtil.getEntityManager();
+		EntityManager entityManager = EntityManagereUtil.getEntityManager();
 		try {
 
 			// è un cambiamento del database,
@@ -135,14 +137,14 @@ public class AtletaServiceImpl implements AtletaService {
 			e.printStackTrace();
 			throw e;
 		} finally {
-			EntityManagerUtil.closeEntityManager(entityManager);
+			EntityManagereUtil.closeEntityManager(entityManager);
 		}
 
 	}
 
 	@Override
 	public void aggiungiSport(Atleta atletaEsistente, Sport sportInstance) throws Exception {
-		EntityManager entityManager = EntityManagerUtil.getEntityManager();
+		EntityManager entityManager = EntityManagereUtil.getEntityManager();
 		try {
 
 			// è un cambiamento del database,
@@ -172,8 +174,25 @@ public class AtletaServiceImpl implements AtletaService {
 			e.printStackTrace();
 			throw e;
 		} finally {
-			EntityManagerUtil.closeEntityManager(entityManager);
+			EntityManagereUtil.closeEntityManager(entityManager);
 		}
 
+	}
+
+	@Override
+	public Long sommaMedaglieVinteInSportChiusi() throws Exception {
+		EntityManager entityManager = EntityManagereUtil.getEntityManager();
+		try {
+			// injection
+			atletaDao.setEntityManager(entityManager);
+
+			// esecuzione metodo
+			return atletaDao.sumNumeroMedaglieVinteInSportChiusi();
+		} catch (Exception e) {
+			e.printStackTrace();
+			throw e;
+		} finally {
+			EntityManagereUtil.closeEntityManager(entityManager);
+		}
 	}
 }
